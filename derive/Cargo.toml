@@ -1,0 +1,25 @@
+[package]
+name = "axia-scale-codec-derive"
+description = "Serialization and deserialization derive macro for AXIA SCALE Codec"
+version = "2.3.1"
+authors = ["AXIA Technologies <sankar.boro@zeeve.io>"]
+license = "Apache-2.0"
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1.0.8", features = ["full", "visit"] }
+quote = "1.0.2"
+proc-macro2 = "1.0.6"
+proc-macro-crate = "1.0.0"
+
+[dev-dependencies]
+axia-scale-codec = { path = ".." }
+
+[features]
+# Enables the new `MaxEncodedLen` trait.
+# NOTE: This is still considered experimental and is exempt from the usual
+# SemVer guarantees. We do not guarantee no code breakage when using this.
+max-encoded-len = []

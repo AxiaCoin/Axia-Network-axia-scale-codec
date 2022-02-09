@@ -1,0 +1,62 @@
+[package]
+name = "axia-scale-codec"
+description = "SCALE - Simple Concatenating Aggregated Little Endians"
+version = "2.3.1"
+authors = ["AXIA Technologies <sankar.boro@zeeve.io>"]
+license = "Apache-2.0"
+repository = "https://github.com/axia-tech/axia-scale-codec"
+categories = ["encoding"]
+edition = "2018"
+
+[dependencies]
+arrayvec = { version = "0.7", default-features = false }
+serde = { version = "1.0.102", optional = true }
+axia-scale-codec-derive = { path = "derive", version = "2.3.1", default-features = false, optional = true }
+bitvec = { version = "0.20.1", default-features = false, features = ["alloc"], optional = true }
+byte-slice-cast = { version = "1.0.0", default-features = false }
+generic-array = { version = "0.14.4", optional = true }
+arbitrary = { version = "1.0.1", features = ["derive"], optional = true }
+impl-trait-for-tuples = "0.2.1"
+
+[dev-dependencies]
+criterion = "0.3.0"
+serde_derive = { version = "1.0" }
+axia-scale-codec-derive = { path = "derive", version = "2.3.1", default-features = false }
+quickcheck = "1.0"
+trybuild = "1.0.42"
+
+[[bench]]
+name = "benches"
+harness = false
+
+[lib]
+bench = false
+
+[features]
+default = ["std"]
+derive = ["axia-scale-codec-derive"]
+std = ["serde", "bitvec/std", "byte-slice-cast/std", "chain-error"]
+bit-vec = ["bitvec"]
+fuzz = ["std", "arbitrary"]
+
+# Enables the new `MaxEncodedLen` trait.
+# NOTE: This is still considered experimental and is exempt from the usual
+# SemVer guarantees. We do not guarantee no code breakage when using this.
+max-encoded-len = ["axia-scale-codec-derive/max-encoded-len"]
+
+# Make error fully descriptive with chaining error message.
+# Should not be used in a constrained environment.
+chain-error = []
+
+# WARNING: DO _NOT_ USE THIS FEATURE IF YOU ARE WORKING ON CONSENSUS CODE!*
+#
+# Provides implementations for more data structures than just Vec and Box.
+# Concretely it will provide axia-scale-codec implementations for many types
+# that can be found in std and/or alloc.
+full = []
+
+[workspace]
+members = [
+	"derive",
+	"fuzzer",
+]
